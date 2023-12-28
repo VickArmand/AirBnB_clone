@@ -19,6 +19,48 @@ class HBNBCommand(cmd.Cmd):
     inherits from Cmd class
     """
     prompt = '(hbnb)'
+    __classes = {
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+            }
+    operations = ['all', 'count', 'show', 'destroy', 'update']
+
+    def precmd(self, line):
+        """
+        Hook method executed just before the command line line is
+        interpreted, but after the input prompt is generated and issued.
+        """
+        impurities = ['.', '(', ')']
+        for impurity in impurities:
+            if impurity in line:
+                line_list = line.split(impurity)
+                line = ' '.join(line_list)
+        line_list = line.split()
+        if line_list[0] in HBNBCommand.__classes:
+            if line_list[1] in HBNBCommand.operations:
+                buffer = line_list[0]
+                line_list[0] = line_list[1]
+                line_list[1] = buffer
+        line = ' '.join(line_list)
+        return line
+
+    def do_count(self, arg):
+        """
+        retrieves the number of instances of a class
+        Arguments:
+            arg: consists of the class name to count the instances
+        """
+        arglist = parse(arg)
+        if len(arglist) == 0:
+            print("** class name missing **")
+        else:
+            count = 0
+            cls = self.verify_class(arglist[0])
+            for obj in storage.all().values():
+                if type(obj) == cls:
+                    count += 1
+            print(count)
 
     def do_create(self, arg):
         """
