@@ -57,6 +57,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             count = 0
             cls = self.verify_class(arglist[0])
+            storage.reload()
             for obj in storage.all().values():
                 if type(obj) == cls:
                     count += 1
@@ -77,6 +78,7 @@ class HBNBCommand(cmd.Cmd):
             if cls:
                 my_model = cls()
                 my_model.save()
+                storage.reload()
                 print(my_model.id)
 
     def do_all(self, arg):
@@ -146,6 +148,7 @@ class HBNBCommand(cmd.Cmd):
                 if key in objdict:
                     del (objdict[key])
                     storage.save()
+                    storage.reload()
                 else:
                     print("** no instance found **")
 
@@ -182,6 +185,7 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     objdict[key].__dict__[arglist[2]] = arglist[3]
                     storage.save()
+                    storage.reload()
 
     def do_quit(self, line):
         """Quit command to exit the program"""
