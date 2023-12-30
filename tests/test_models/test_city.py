@@ -21,6 +21,10 @@ class TestCity(unittest.TestCase):
         """This method tests if the state_id is a string"""
         self.assertEqual(type(self.new_model.state_id), str)
 
+    def test_name(self):
+        """This method tests if the name attribute is a string"""
+        self.assertEqual(type(self.new_model.name), str)
+
     def test_id(self):
         """This method tests if the id attribute is a string"""
         self.assertEqual(type(self.new_model.id), str)
